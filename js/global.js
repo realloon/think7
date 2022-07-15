@@ -101,6 +101,10 @@ class Think7Terminal {
         return 'Think7 Terminal'
     }
 
+    // help(query) {
+
+    // }
+
     greet() {
         let current = tools.getDate()
 
@@ -165,14 +169,38 @@ class Think7Terminal {
 
     bmi(height, weight) { // TODO: 当参数不合法时，返回引导
         if (height && weight) {
+            height /= 100
             let bmi = weight / (height * height)
             return bmi.toString()
         }
         else {
-            return 'bmi [height_m] [weight_kg]'
+            return 'bmi [height_cm] [weight_kg]'
         }
     }
+
+    bmr(age, sex, weight) {
+        if (!(age && sex && weight))
+            return 'bmr [age] [sex] [weight_kg]'
+
+        let bmr
+
+        if (age >= 18 && age <= 30) {
+            if (sex === 'male')
+                bmr = 63 * weight + 2896
+            else
+                bmr = 62 * weight + 2036
+        }
+        else if (age >= 30 && age <= 60) {
+            if (sex === 'male')
+                bmr = 48 * 3653
+            else
+                bmr = 34 * weight + 3538
+        }
+
+        return (bmr / 4.18).toString()
+    }
 }
+
 
 function confirm() { } // TODO: 二次确认
 
