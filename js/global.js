@@ -91,7 +91,7 @@ class Database {
 let database = Database.getInstance()
 
 class Think7Terminal {
-    static VERSION = '0.0.3'
+    static VERSION = '0.0.4'
 
     static addHistory(method) {
         Database.history += ',' + method
