@@ -14,5 +14,8 @@ Version_0.0.3：
     将对象字面量重构为单例类，包括Think7Tools、Database和Think7Terminal类；
     重构解析器函数，支持参数解析；
     翻译命令支持中英互译和整句翻译，使用anxio+jsonp；
-    重构日期工具库；
+    重构时间工具库；
     重构清屏指令；
+
+Version_0.0.4：
+    重构时间工具库及相关引用，使用Map数据结构；

@@ -16,14 +16,26 @@ class Think7Tools {
 
     getDate() {
         const date = new Date()
-        const current = {
-            year: date.getFullYear(),
-            month: date.getMonth() + 1,
-            day: date.getDate(),
-            week: '星期' + '日一二三四五六'.charAt(date.getDay()),
-            hours: date.getHours(),
-            minutes: date.getMinutes(),
-            seconds: date.getSeconds()
+        let current = new Map([
+            ['year', date.getFullYear()],
+            ['month', date.getMonth() + 1],
+            ['day', date.getDate()],
+            ['week', '星期' + '日一二三四五六'.charAt(date.getDay())],
+            ['hours', date.getHours()],
+            ['minutes', date.getMinutes()],
+            ['seconds', date.getSeconds()]
+        ])
+
+        if (current.get('hours') <= 9 && current.get('hours')) {
+            current.set('time', '早上')
+        } else if (current.get('hours') <= 12) {
+            current.set('time', '上午')
+        } else if (current.get('hours') <= 13) {
+            current.set('time', '中午')
+        } else if (current.get('hours') <= 18) {
+            current.set('time', '下午')
+        } else {
+            current.set('time', '晚上')
         }
 
         return current
@@ -91,21 +103,8 @@ class Think7Terminal {
 
     greet() {
         let current = tools.getDate()
-        let time = ''
 
-        if (current.hours <= 9) { // FIXME: 没有正确判断凌晨（晚上），且时辰应属于getDate()方法
-            time = '早上'
-        } else if (current.hours <= 12) {
-            time = '上午'
-        } else if (current.hours <= 13) {
-            time = '中午'
-        } else if (current.hours <= 18) {
-            time = '下午'
-        } else {
-            time = '晚上'
-        }
-
-        let text = `${time}好，${Database.username}，今天是 ${current.year} 年 ${current.month} 月 ${current.day} 日，${current.week}。`
+        let text = `${current.get('time')}好，${Database.username}，今天是 ${current.get('year')} 年 ${current.get('month')} 月 ${current.get('day')} 日，${current.get('week')}。`
         return text
     }
 
@@ -149,12 +148,13 @@ class Think7Terminal {
         }))
 
         r += DOMrenderChar('This data is saved in localStorage', 'remind')
+
         return r
     }
 
     date() {
         let current = tools.getDate()
-        let r = `${current.year} 年 ${current.month} 月 ${current.day} 日 ${current.hours}:${current.minutes}:${current.seconds}`
+        let r = `${current.get('year')} 年 ${current.get('month')} 月 ${current.get('day')} 日 ${current.get('hours')}:${current.get('minutes')}:${current.get('seconds')}`
 
         return r
     }
@@ -178,7 +178,7 @@ function confirm() { } // TODO: 二次确认
 
 function parser(text) {
     text = text.trim()
-    
+
     let isSingleMethod = !text.trim().includes(' ')
     let method = ''
     let chain = ''

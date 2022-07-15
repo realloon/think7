@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (method == 'clear') {
                 terminalE.innerHTML = DOMrenderChar(think7.clear(), 'termin-title')
             } else if (params.length !== 0) {
-                printf(think7[method].apply(think7, params))
+                printf(think7[method](...params))
             } else {
                 printf(think7[method]())
             }
