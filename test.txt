@@ -1,0 +1,11 @@
+q=apple
+from=en
+to=zh
+appid=20220709001268611
+salt=1435660288（随机码）
+平台分配的密钥: fX9OsTNz_zLSn35kgX3f
+
+20220709001268611apple1435660288fX9OsTNz_zLSn35kgX3f
+6e6b7d02bce783f0e729de72182b5cba
+
+http://api.fanyi.baidu.com/api/trans/vip/translate?q=apple&from=en&to=zh&appid=20220709001268611&salt=1435660288&sign=6e6b7d02bce783f0e729de72182b5cba
