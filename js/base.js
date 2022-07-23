@@ -2,12 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const terminalE = document.querySelector('#terminal')
     const inputE = document.querySelector('#input')
 
-    let think7 = new Think7Terminal
+    let think7 = new Think7Terminal()
 
     window['printf'] = (content, isUser = false) => {
-        if (typeof (content) == 'string' && isUser) {
+        console.log('wanna print: ' + content)
+
+        if (typeof content == 'string' && isUser) {
             terminalE.innerHTML += `\n> ${content}`
-        } else if (typeof (content) == 'string') {
+        } else if (typeof content == 'string') {
             terminalE.innerHTML += `\n${content}`
         }
     }
@@ -26,13 +28,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const chain = parse.chain
         const params = parse.params
 
-        printf(`${DOMrenderChar('>', 'bold')} ${DOMrenderChar(method, 'method')} ${chain}`) // 在终端打印原始输入
+        printf(
+            `${DOMrenderChar('>', 'bold')} ${DOMrenderChar(
+                method,
+                'method'
+            )} ${chain}`
+        ) // 在终端打印原始输入
 
         if (Object.getPrototypeOf(think7).hasOwnProperty(method)) {
             if (method == 'echo' || method == 'translate') {
-                printf(think7[method](chain))
+                let value = think7[method](chain)
+                if (value instanceof Promise) {
+                    value.then((v) => printf(v))
+                } else {
+                    printf(value)
+                }
             } else if (method == 'clear') {
-                terminalE.innerHTML = DOMrenderChar(think7.clear(), 'termin-title')
+                terminalE.innerHTML = DOMrenderChar(
+                    think7.clear(),
+                    'termin-title'
+                )
             } else if (params.length !== 0) {
                 printf(think7[method](...params))
             } else {
@@ -56,12 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputE.value = ''
                 terminalE.scrollTo({
                     top: terminalE.scrollHeight,
-                    behavior: 'smooth'
+                    behavior: 'smooth',
                 })
                 break
 
             case 38: // 绑定上方向键
-                if (localStorage.getItem('lastMethod')) { // FIXME: 需要将光标移动到最后
+                if (localStorage.getItem('lastMethod')) {
+                    // FIXME: 需要将光标移动到最后
                     inputE.value = localStorage.getItem('lastMethod')
                 }
                 break

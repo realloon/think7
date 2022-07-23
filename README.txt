@@ -20,3 +20,6 @@ Version_0.0.3：
 Version_0.0.4：
     添加命令：bmr；
     重构时间工具库及相关引用，使用Map数据结构；
+
+Vsion_0.0.5：
+    translate 指令的异步打印结构从回调方法改为Promise对象实现；

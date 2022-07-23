@@ -171,8 +171,32 @@ class Think7Terminal {
         return r
     }
 
-    translate(query) {
-        runTranslate(query, printf)
+    async translate(query) {
+        const appid = '20220709001268611'
+        const key = 'fX9OsTNz_zLSn35kgX3f'
+        let salt = new Date().getTime()
+        let from, to
+
+        tools.hasChinese(query)
+            ? ([from, to] = ['zh', 'en'])
+            : ([from, to] = ['en', 'zh'])
+
+        let str1 = appid + query + salt + key
+        let sign = MD5(str1)
+
+        let r = await axios.jsonp(
+            'http://api.fanyi.baidu.com/api/trans/vip/translate',
+            {
+                q: query,
+                from: from,
+                to: to,
+                salt: salt,
+                appid: appid,
+                sign: sign,
+            }
+        )
+
+        return r.trans_result[0].dst
     }
 
     bmi(height, weight) {
@@ -254,40 +278,4 @@ axios.jsonp = (url, data) => {
         }
         headEle.appendChild(JSONP)
     })
-}
-
-function runTranslate(q, fun) {
-    const appid = '20220709001268611'
-    const key = 'fX9OsTNz_zLSn35kgX3f'
-    let salt = new Date().getTime()
-    let query = q
-    let from, to
-
-    if (tools.hasChinese(q)) {
-        from = 'zh'
-        to = 'en'
-    } else {
-        from = 'en'
-        to = 'zh'
-    }
-
-    let str1 = appid + query + salt + key
-    let sign = MD5(str1)
-
-    axios
-        .jsonp('http://api.fanyi.baidu.com/api/trans/vip/translate', {
-            q: query,
-            from: from,
-            to: to,
-            salt: salt,
-            appid: appid,
-            sign: sign,
-        })
-        .then((response) => {
-            let result = response.trans_result[0].dst // FIXME: ...
-            fun(result)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
 }
